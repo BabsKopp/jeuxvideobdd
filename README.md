@@ -19,8 +19,3 @@ Elle permet d'ajouter, modifier, supprimer et afficher des jeux, ainsi que d'ass
   - `mysql-connector-python` (Connexion MySQL)  
   - `PrettyTable` (Affichage en tableau)  
 
-## 📦 Installation
-1. **Cloner le dépôt GitHub :**
-   ```bash
-   git clone https://github.com/tonpseudo/nom-du-projet.git
-   cd nom-du-projet
