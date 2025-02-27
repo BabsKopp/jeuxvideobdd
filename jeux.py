@@ -10,47 +10,57 @@ class Utile:
         # params : tuple contenant 2 valeurs : 
         # - le type de retour
         # - les options supplémentaires
+        
+        # Vérification si l'on attend un entier 
         while True:
-            donneTemp = input(msg) 
+            donneTemp = input(msg) # Demande une entrée utilisateur avec le message fourni 
             if(params[0] == "int"):
                 try:
-                    donnee = int(donneTemp)
-                    break
+                    donnee = int(donneTemp)  # Convertit l'entrée en entier
+                    break # Sort de la boucle si la conversion réussit
                 except:
                     print("Un nb entier est demandé") 
+            
+            # Vérification si l'on attend un nombre flottant 
             if(params[0] == "float"):
                 try:
-                    donnee = float(donneTemp)
+                    donnee = float(donneTemp) # Convertit l'entrée en float
                     break
                 except:
-                    print("Un nb décimal est demandé")
+                    print("Un nb décimal est demandé") # Message d'erreur si la conversion échoue
+            
+            # Vérification si l'on attend un booléen         
             elif(params[0] == "bool"):
 
-                t = ["1", "O", "Y", "T", "YES", "OUI", "TRUE"]
-                if donneTemp.upper() in t: 
+                t = ["1", "O", "Y", "T", "YES", "OUI", "TRUE"] # Liste des valeurs considérées comme True
+                if donneTemp.upper() in t:  # Si l'entrée correspond à une valeur True
                     donnee = True
                 else:
-                    donnee = False
+                    donnee = False # Sinon, c'est False
                 break
+            
+            # Vérification si l'on attend une date 
             elif(params[0] == "date"):
                 try:
-                    donnee = datetime.strptime(donneTemp, params[1]['format'])
+                    donnee = datetime.strptime(donneTemp, params[1]['format']) # Convertit l'entrée en date selon le format fourni
                     break
                 except:
-                    print("Format manquant ou incorect")
+                    print("Format manquant ou incorect") # Message d'erreur si la conversion échoue
+            
+            # Vérification si l'on attend une chaîne de caractères 
             elif(params[0] == "str"):
-                donnee = donneTemp
+                donnee = donneTemp # Stocke directement l'entrée utilisateur
                 break
-        return donnee
+        return donnee # Retourne la valeur convertie après validation 
                 
-        
+# Méthode statique pour tester la fonction `checkInput`       
     @staticmethod
     def start():
-        test = Utile.checkInput("une chaine ?")
+        test = Utile.checkInput("une chaine ?") # Test avec une chaîne de caractères
         print(test)
-        testf = Utile.checkInput("un float ?", ("float",))
+        testf = Utile.checkInput("un float ?", ("float",)) # Test avec un float
         print(testf)
-        testD = Utile.checkInput("une date ?", ("date", {"format":"%Y-%m-%d"}))
+        testD = Utile.checkInput("une date ?", ("date", {"format":"%Y-%m-%d"})) # Test avec une date au format AAAA-MM-JJ
         print(testD)
 
 
@@ -133,7 +143,7 @@ class Fonctionalite:
                     update_jeux = ("UPDATE jeux SET Jeux_Prix = %(Jeux_Prix)s WHERE Jeux_Id = %(Jeux_Id)s ")
                     
                     id = int(input("Quel est l'ID du jeux que tu souhaites modifier : "))
-                    cursor.execute("SELECT * FROM jeux WHERE Jeux_Id = %s", (id,))
+                    cursor.execute("SELECT * FROM jeux WHERE Jeux_Id = %s", (id,)) #Execute la requete SQL
                     jeu_existant = cursor.fetchone()
 
                     if jeu_existant:
@@ -152,7 +162,7 @@ class Fonctionalite:
                     }  
                         
                         cursor.execute(update_jeux, data_jeux)
-                        print(cursor.rowcount, "Jeu modifié")
+                        print(cursor.rowcount, "Jeu modifié") # affiche le nombre de ligne modifiée (rowcount)
                         self.connexion.commit()
                         cursor.close()    
                  
