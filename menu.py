@@ -1,6 +1,7 @@
 from jeux import Fonctionalite
 from plateforme import Options
 from prettytable import PrettyTable
+
 class Programme:
     def __init__(self):
         pass

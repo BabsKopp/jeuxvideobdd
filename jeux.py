@@ -11,13 +11,13 @@ class Utile:
         # - le type de retour
         # - les options supplémentaires
         while True:
-            donneTemp = input(msg)
+            donneTemp = input(msg) 
             if(params[0] == "int"):
                 try:
                     donnee = int(donneTemp)
                     break
                 except:
-                    print("Un nb entier est demandé")
+                    print("Un nb entier est demandé") 
             if(params[0] == "float"):
                 try:
                     donnee = float(donneTemp)
@@ -81,11 +81,11 @@ class Fonctionalite:
                 self.connexion.start_transaction() 
                 add = input("Souhaites-tu ajouter un jeu ? (O/N) : ") #demander à l'utilisateur s'il veut modifier un contact
                 if add.upper() == "O":
-                    cursor = self.connexion.cursor(prepared=True)
+                    cursor = self.connexion.cursor(prepared=True) # Initialisation d'un curseur pour exécuter des requêtes préparées (sécurisé & optimisé)
                     add_jeu = ("INSERT INTO jeux "
                                 "(Jeux_Titre, Jeux_Description, Jeux_Prix, Jeux_DateSortie, Jeux_PaysOrigine, Jeux_Connexion, Jeux_Mode, Genre_Id)"
                                 "VALUES (%(Jeux_Titre)s, %(Jeux_Description)s, %(Jeux_Prix)s, %(Jeux_DateSortie)s, %(Jeux_PaysOrigine)s, %(Jeux_Connexion)s, %(Jeux_Mode)s, %(Genre_Id)s)"
-                                )
+                                ) #Ajout des critères d'ajout d'un jeu dans les colonnes prédéfinis 
                     
                     data_jeux = {
                         'Jeux_Titre' : Utile.checkInput("Titre du jeu : "),
@@ -99,7 +99,7 @@ class Fonctionalite:
                     }       
                     cursor.execute(add_jeu, data_jeux)
                     print(cursor.rowcount, "Jeu ajouté")
-                    self.connexion.commit()
+                    self.connexion.commit() 
                     cursor.close()
                 else:    
                     print("Pas de modification souhaitée")
@@ -129,7 +129,7 @@ class Fonctionalite:
                 update = input("Souhaites-tu modifier un jeu ? (O/N) : ") #demander à l'utilisateur s'il veut modifier un jeu
                 Fonctionalite.afficher_jeux
                 if update.upper() == "O":
-                    cursor = self.connexion.cursor(prepared=True)
+                    cursor = self.connexion.cursor(prepared=True) # Initialisation d'un curseur pour exécuter des requêtes préparées (sécurisé & optimisé)
                     update_jeux = ("UPDATE jeux SET Jeux_Prix = %(Jeux_Prix)s WHERE Jeux_Id = %(Jeux_Id)s ")
                     
                     id = int(input("Quel est l'ID du jeux que tu souhaites modifier : "))
@@ -185,31 +185,21 @@ class Fonctionalite:
     def supprimer_jeux(self):
         # """Supprimer un jeu par l'ID"""
         try: 
-            if self.connexion.is_connected():
-                self.connexion.start_transaction() 
+            if self.connexion.is_connected(): # Si la connexion est effectuée
+                self.connexion.start_transaction() #lancement de la transaction
                 self.afficher_jeux
-                delete = input("Souhaites-tu supprimer un jeu ? (O/N) : ") #demander à l'utilisateur s'il veut modifier un jeu
+                delete = input("Souhaites-tu supprimer un jeu ? (O/N) : ") #Demander à l'utilisateur s'il veut modifier un jeu
                 if delete.upper() == "O":
-                    cursor = self.connexion.cursor(prepared=True)
-                    delete_jeux = ("DELETE FROM jeux WHERE Jeux_Id = %(Jeux_Id)s ")
+                    cursor = self.connexion.cursor(prepared=True) # Initialisation d'un curseur pour exécuter des requêtes préparées (sécurisé & optimisé)
+                    delete_jeux = ("DELETE FROM jeux WHERE Jeux_Id = %(Jeux_Id)s ") #definition de la requete SQL avec un element de la colonne Jeux_Id
                                 
                     id = int(input("Quel est l'ID du jeux que tu souhaites supprimer : "))
-                    data_jeux = {
-                        'Jeux_Id' : id,
-                        'Jeux_Titre' : [0],
-                        'Jeux_Description' : "Très bon jeux",
-                        'Jeux_Prix' : 69.99,
-                        'Jeux_DateSortie' : '2017-11-11',
-                        'Jeux_PaysOrigine' : 'USA',
-                        'Jeux_Connexion' : 'Non',
-                        'Jeux_Mode' : 'Solo',
-                        'Genre_Id' : 4  
-                    }    
+                    data_jeux = {'Jeux_Id' : id,}    
                 
-                    cursor.execute(delete_jeux, data_jeux)
-                    print(cursor.rowcount, "Le jeu a été supprimé")
-                    self.connexion.commit()
-                    cursor.close()
+                    cursor.execute(delete_jeux, data_jeux) #Execution des deux requetes 
+                    print(cursor.rowcount, "Le jeu a été supprimé") #Utilisation de .rowcount pour qu'il compte le nombre de ligne modifié
+                    self.connexion.commit() #Execution des requetes de la transaction
+                    cursor.close() #fermeture du cursor 
                 
                 else:  
                     print("Pas de modification souhaitée")
